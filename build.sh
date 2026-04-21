@@ -6,4 +6,5 @@ python manage.py shell -c "
 from django.contrib.auth.models import User
 if not User.objects.filter(username='harshi').exists():
     User.objects.create_superuser('harshi', 'channelwebdev@gmail.com', 'QWERTY@098')
+print('Superuser ready')
 "
