@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>⚙️ Admin Dashboard</h2>
+    <span class="badge bg-danger">Staff Only</span>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card p-4 text-center">
+            <h1 class="display-4 fw-bold text-success">{{ total_users }}</h1>
+            <p class="text-muted">Total Users</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-4 text-center">
+            <h1 class="display-4 fw-bold text-success">{{ active_subs }}</h1>
+            <p class="text-muted">Active Subscriptions</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-4 text-center">
+            <h1 class="display-4 fw-bold text-success">£{{ prize_pool }}</h1>
+            <p class="text-muted">Current Prize Pool</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-4 text-center">
+            <h1 class="display-4 fw-bold 
+                {% if pending_winners > 0 %}text-warning{% else %}text-success{% endif %}">
+                {{ pending_winners }}
+            </h1>
+            <p class="text-muted">Pending Verifications</p>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>🎯 Draw Management</h5>
+            <p class="text-muted">{{ total_draws }} draws total</p>
+            <a href="/draws/admin/draws/" class="btn btn-success w-100 mb-2">Manage Draws</a>
+            <a href="/draws/admin/draws/create/" class="btn btn-outline-success w-100">+ New Draw</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>🏆 Winner Verification</h5>
+            <p class="text-muted">{{ pending_winners }} pending</p>
+            <a href="/draws/admin/winners/" class="btn btn-success w-100">Verify Winners</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>❤️ Charity Management</h5>
+            <p class="text-muted">{{ total_charities }} charities listed</p>
+            <a href="/admin/charities/charity/" class="btn btn-success w-100 mb-2">Manage Charities</a>
+            <a href="/admin/charities/charity/add/" class="btn btn-outline-success w-100">+ Add Charity</a>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Users -->
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5>👥 Recent Users</h5>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in recent_users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.date_joined|date:"d M Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="/admin/auth/user/" class="btn btn-outline-success btn-sm">View All Users</a>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5>💳 Recent Subscriptions</h5>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Plan</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sub in recent_subs %}
+                    <tr>
+                        <td>{{ sub.user.username }}</td>
+                        <td>{{ sub.plan|title }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if sub.status == 'active' %}bg-success
+                                {% else %}bg-secondary{% endif %}">
+                                {{ sub.status|title }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

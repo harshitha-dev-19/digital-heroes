@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero-section text-center py-5 mb-5">
+    <h1 class="display-4 fw-bold">Play Golf. Win Prizes. Change Lives.</h1>
+    <p class="lead mt-3">Enter your scores, join monthly draws, and support a charity you love.</p>
+    <a href="/accounts/signup/" class="btn btn-success btn-lg mt-3 px-5">Get Started →</a>
+</div>
+
+<!-- How It Works -->
+<div class="row text-center mb-5">
+    <h2 class="mb-4">How It Works</h2>
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h3>🏌️ 1. Subscribe</h3>
+            <p>Choose a monthly or yearly plan and join the community.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h3>⛳ 2. Enter Scores</h3>
+            <p>Log your last 5 Stableford golf scores to enter monthly draws.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h3>🏆 3. Win & Give</h3>
+            <p>Win prize pool rewards while supporting your chosen charity.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Charities -->
+{% if featured_charities %}
+<div class="mb-5">
+    <h2 class="text-center mb-4">Featured Charities</h2>
+    <div class="row">
+        {% for charity in featured_charities %}
+        <div class="col-md-4">
+            <div class="card h-100">
+                {% if charity.image %}
+                    <img src="{{ charity.image.url }}" class="card-img-top" alt="{{ charity.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ charity.name }}</h5>
+                    <p class="card-text">{{ charity.description|truncatewords:20 }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- CTA -->
+<div class="text-center py-5 bg-dark text-white rounded mb-4">
+    <h2>Ready to make an impact?</h2>
+    <p>Join hundreds of golfers making a difference every month.</p>
+    <a href="/accounts/signup/" class="btn btn-success btn-lg px-5">Subscribe Now</a>
+</div>
+
+{% endblock %}

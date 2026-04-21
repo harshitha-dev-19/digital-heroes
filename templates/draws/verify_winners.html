@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Winner Verification</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Draw</th>
+            <th>Match</th>
+            <th>Prize</th>
+            <th>Proof</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for winner in winners %}
+        <tr>
+            <td>{{ winner.user.username }}</td>
+            <td>{{ winner.draw.month|date:"F Y" }}</td>
+            <td>{{ winner.match_type }}-Match</td>
+            <td>£{{ winner.prize_amount }}</td>
+            <td>
+                {% if winner.proof_image %}
+                    <a href="{{ winner.proof_image.url }}" target="_blank">View Proof</a>
+                {% else %}
+                    No proof
+                {% endif %}
+            </td>
+            <td><span class="badge bg-warning">{{ winner.status|title }}</span></td>
+            <td>
+                <a href="/draws/admin/winners/approve/{{ winner.pk }}/" 
+                   class="btn btn-sm btn-success">Approve</a>
+                <a href="/draws/admin/winners/reject/{{ winner.pk }}/" 
+                   class="btn btn-sm btn-danger">Reject</a>
+                <a href="/draws/admin/winners/paid/{{ winner.pk }}/" 
+                   class="btn btn-sm btn-primary">Mark Paid</a>
+            </td>
+        </tr>
+        {% empty %}
+            <tr><td colspan="7" class="text-muted">No pending verifications.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <a href="/draws/admin/draws/" class="btn btn-outline-secondary">← Back to Draws</a>
+</div>
+{% endblock %}

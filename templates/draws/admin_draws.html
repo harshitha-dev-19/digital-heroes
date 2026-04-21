@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h2>Manage Draws</h2>
+    <a href="/draws/admin/draws/create/" class="btn btn-success">+ New Draw</a>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Status</th>
+            <th>Winning Numbers</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for draw in draws %}
+        <tr>
+            <td>{{ draw.month|date:"F Y" }}</td>
+            <td><span class="badge bg-info">{{ draw.status|title }}</span></td>
+            <td>
+                {% if draw.winning_numbers %}
+                    {% for num in draw.winning_numbers %}
+                        <span class="badge bg-success">{{ num }}</span>
+                    {% endfor %}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+            <td>
+                {% if draw.status == 'pending' %}
+                    <a href="/draws/admin/draws/simulate/{{ draw.pk }}/" 
+                       class="btn btn-sm btn-warning">Simulate</a>
+                {% endif %}
+                {% if draw.status == 'simulated' %}
+                    <a href="/draws/admin/draws/publish/{{ draw.pk }}/" 
+                       class="btn btn-sm btn-success">Publish</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

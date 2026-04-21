@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="text-center mb-5">Choose Your Plan</h2>
+
+{% if subscription and subscription.status == 'active' %}
+<div class="alert alert-success text-center">
+    You are on the <strong>{{ subscription.plan|title }}</strong> plan. 
+    Renews: {{ subscription.renewal_date }}
+    <a href="/subscriptions/cancel/" class="btn btn-danger btn-sm ms-3">Cancel</a>
+</div>
+{% endif %}
+
+<div class="row justify-content-center g-4">
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100">
+            <h3>Monthly</h3>
+            <h1 class="display-4 fw-bold text-success">£10</h1>
+            <p class="text-muted">per month</p>
+            <ul class="list-unstyled my-3">
+                <li>✅ Enter monthly draws</li>
+                <li>✅ Score tracking</li>
+                <li>✅ Charity contribution</li>
+            </ul>
+            <a href="/subscriptions/subscribe/monthly/" class="btn btn-success mt-auto">Subscribe Monthly</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100 border-success">
+            <span class="badge bg-success mb-2">Best Value</span>
+            <h3>Yearly</h3>
+            <h1 class="display-4 fw-bold text-success">£100</h1>
+            <p class="text-muted">per year (save £20)</p>
+            <ul class="list-unstyled my-3">
+                <li>✅ Enter monthly draws</li>
+                <li>✅ Score tracking</li>
+                <li>✅ Charity contribution</li>
+                <li>✅ 2 months free</li>
+            </ul>
+            <a href="/subscriptions/subscribe/yearly/" class="btn btn-success mt-auto">Subscribe Yearly</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

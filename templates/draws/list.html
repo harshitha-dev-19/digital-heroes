@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Monthly Draws</h2>
+<div class="row g-4">
+    {% for draw in draws %}
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>Draw — {{ draw.month|date:"F Y" }}</h5>
+            <p>Winning Numbers:
+                {% for num in draw.winning_numbers %}
+                    <span class="badge bg-success">{{ num }}</span>
+                {% endfor %}
+            </p>
+            <a href="/draws/{{ draw.pk }}/" class="btn btn-outline-success btn-sm">View Details</a>
+        </div>
+    </div>
+    {% empty %}
+        <p class="text-muted">No draws published yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

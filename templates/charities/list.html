@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Our Charities</h2>
+
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="q" value="{{ query }}" 
+               class="form-control" placeholder="Search charities...">
+        <button class="btn btn-success" type="submit">Search</button>
+    </div>
+</form>
+
+<div class="row g-4">
+    {% for charity in charities %}
+    <div class="col-md-4">
+        <div class="card h-100">
+            {% if charity.image %}
+                <img src="{{ charity.image.url }}" class="card-img-top" 
+                     style="height:200px; object-fit:cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ charity.name }}</h5>
+                <p class="card-text">{{ charity.description|truncatewords:25 }}</p>
+            </div>
+            <div class="card-footer">
+                {% if user.is_authenticated %}
+                    <a href="/charities/select/{{ charity.pk }}/" 
+                       class="btn btn-success w-100">Select This Charity</a>
+                {% else %}
+                    <a href="/accounts/signup/" class="btn btn-outline-success w-100">Sign Up to Select</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <p class="text-muted">No charities found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

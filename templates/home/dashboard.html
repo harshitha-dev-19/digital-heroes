@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4">Welcome, {{ user.username }} 👋</h2>
+
+<div class="row g-4">
+
+    <!-- Subscription Status -->
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>📋 Subscription</h5>
+            {% if subscription %}
+                <span class="badge bg-success">{{ subscription.status|title }}</span>
+                <p class="mt-2">Plan: <strong>{{ subscription.plan|title }}</strong></p>
+                <p>Renewal: <strong>{{ subscription.renewal_date }}</strong></p>
+                <a href="/subscriptions/plans/" class="btn btn-outline-success btn-sm">Change Plan</a>
+            {% else %}
+                <p class="text-muted">No active subscription</p>
+                <a href="/subscriptions/plans/" class="btn btn-success btn-sm">Subscribe Now</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Charity -->
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>❤️ Your Charity</h5>
+            {% if profile.selected_charity %}
+                <p><strong>{{ profile.selected_charity.name }}</strong></p>
+                <p>Contribution: <strong>{{ profile.charity_percentage }}%</strong></p>
+            {% else %}
+                <p class="text-muted">No charity selected</p>
+                <a href="/charities/" class="btn btn-outline-success btn-sm">Choose Charity</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Draw Status -->
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h5>🎯 Draw Status</h5>
+            {% if subscription and subscription.status == 'active' %}
+                <span class="badge bg-success">Entered in Next Draw</span>
+                <p class="mt-2 text-muted">Keep your scores updated!</p>
+                <a href="/draws/" class="btn btn-outline-success btn-sm mt-2">View Draws</a>
+            {% else %}
+                <span class="badge bg-secondary">Not Participating</span>
+                <p class="mt-2 text-muted">Subscribe to join draws.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Score Entry -->
+    <div class="col-12">
+        <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>⛳ My Scores</h5>
+                <a href="/scores/add/" class="btn btn-success btn-sm">+ Add Score</a>
+            </div>
+            {% if scores %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for score in scores %}
+                        <tr>
+                            <td>{{ score.date }}</td>
+                            <td>{{ score.score }}</td>
+                            <td>
+                                <a href="/scores/edit/{{ score.id }}/" 
+                                   class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a href="/scores/delete/{{ score.id }}/" 
+                                   class="btn btn-sm btn-outline-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No scores yet. Add your first score!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Winnings -->
+    <div class="col-12">
+        <div class="card p-4">
+            <h5>🏆 My Winnings</h5>
+            {% if winners %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Draw</th>
+                            <th>Match</th>
+                            <th>Prize</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for winner in winners %}
+                         
+                         <tr>
+                            <td>{{ winner.draw.month }}</td>
+                            <td>{{ winner.match_type }}-Number Match</td>
+                            <td>£{{ winner.prize_amount }}</td>
+                            <td><span class="badge bg-info">{{ winner.status|title }}</span></td>
+                            <td>
+                                {% if winner.status == 'pending' and not winner.proof_image %} <a href="/draws/proof/{{ winner.pk }}/"   class="btn btn-sm btn-warning">Upload Proof</a>
+                                {% endif %}
+                            </td>
+                         </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No winnings yet. Good luck in the next draw!</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
